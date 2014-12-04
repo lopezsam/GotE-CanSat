@@ -1,3 +1,3 @@
 GoTE-CanSat
 ===========
-FSW Repository -put all FSW files here
+Sensors - Place your files/configs here
