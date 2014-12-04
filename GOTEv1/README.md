@@ -1,3 +1,3 @@
 GoTE-CanSat
 ===========
-FSW Repository -put all FSW files here
+Subsystems- place all related files in respective folder
