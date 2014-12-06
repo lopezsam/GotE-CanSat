@@ -1,4 +1,4 @@
-GotE-CanSat Software Repository
+GotE-CanSat Software Repository!
 ===========
 
 This will be the main place where the GotE CanSat Team will place our software. Using Github allows us to make things
