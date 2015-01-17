@@ -28,16 +28,32 @@ void setup(){
   
   //check whether file is made
   OpenLog.write("ls\r");//
-  if(OpenLog.read() == '>')//empty card
+  if(OpenLog.read() == '>'){//empty card
     createOpenLogFile(fileName);
+    OpenLog.print("Temperature Data");//Setting titles
+    OpenLog.print(",");
+    OpenLog.print("Number");
+    OpenLog.println();
+  }
   else//file already made
     appendOpenLogFile(fileName);
-  
-  
-  
+ 
 }
 void loop(){
   
+  //Place temperature retrieval Code HERE
+  
+  
+  
+  
+  
+  
+  
+  
+  OpenLog.print(1);//Put temperature Data here
+  OpenLog.print(",");
+  OpenLog.print(2);//Put something else here
+  OpenLog.println();
   
 }
 
