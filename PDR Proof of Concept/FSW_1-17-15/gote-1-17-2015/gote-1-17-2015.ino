@@ -19,7 +19,21 @@ SoftwareSerial OpenLog(3, 2);//OpenLog data object
 
 
 void setup(){
+  
+  
+  //SD Card Reader Setup
   setupOpenLog();
+  gotoCommandMode();
+  char fileName = [ 'g', 'o', 't', 'e', '.', 'c', 's', 'v'];//filename = gote.csvd
+  
+  //check whether file is made
+  OpenLog.write("ls\r");//
+  if(OpenLog.read() == '>')//empty card
+    createOpenLogFile(fileName);
+  else//file already made
+    appendOpenLogFile(fileName);
+  
+  
   
 }
 void loop(){
@@ -42,7 +56,7 @@ void setupOpenLog(void){
       if(OpenLog.read() == '<') break;
 }
 
-void createOpenLogFile(char *filename){//creates file using openlog
+void createOpenLogFile(char* filename){//creates file using openlog
   OpenLog.print("new ");
   OpenLog.println(filename);
  
@@ -64,4 +78,16 @@ void appendOpenLogFile(char *filename){//sets openlog file to append
       if(OpenLog.read() == '<') break;
   }
   
+}
+void gotoCommandMode(void) {//allows OpenLog to create folder, go to append mode
+  //Send three control z to enter OpenLog command mode
+  OpenLog.write(26);
+  OpenLog.write(26);
+  OpenLog.write(26);
+
+  //Wait for OpenLog to respond with '>' to indicate we are in command mode
+  while(1) {
+    if(OpenLog.available())
+      if(OpenLog.read() == '>') break;
+  }
 }
