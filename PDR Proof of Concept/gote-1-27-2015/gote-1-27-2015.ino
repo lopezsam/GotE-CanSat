@@ -58,6 +58,17 @@ void setup(){
   //retrieve deployed
   deployed = readFile('D');
   
+  //determine flight state code
+  //read altitude
+  //read acceleration 
+  if (deployed == 1 ){
+   //between depending on altitude and acceleration 4-8
+  }
+  else
+   //between depending on altitude and acceleration 1-4
+}
+  
+    
   
   
   char fileName =  'g' ;//filename = gote.csvd
@@ -103,6 +114,12 @@ void loop(){
   fswState = ##;
   accel = ##;
   
+  
+  //code to determine flight state
+  if (altitudeB < 5 + Texas ){
+    fswState = 0;
+  }
+  else if (altitudeB < 10 + Texas || accel
   
   //XBee sending data code here
   
