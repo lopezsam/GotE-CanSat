@@ -34,13 +34,13 @@
 #include <SoftwareSerial.h>//OpenLog library
 
 
-const int TEXAS = ;
+const int TEXAS = ;//altitude of texas
 const int resetOpenLog = 4;//D4 pin for OpenLog
 const int TEAMID = 5761; //teamID
 int time; //to be retrieved from SD card before start
 int deployed;//retrieve from SD card before start 
 
-int missionTime, altitudeB, outTemp, inTemp, volt, fswState, ace; //All mission/telemetry parameters are declared here
+int missionTime, altitudeB, outTemp, inTemp, volt, fswState, accel; //All mission/telemetry parameters are declared here
 
 SoftwareSerial OpenLog(3, 2);//OpenLog data object 
 
