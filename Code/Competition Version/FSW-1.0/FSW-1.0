@@ -1,0 +1,123 @@
+/*
+ Connect the following OpenLog to Arduino:
+ RXI of OpenLog to pin 2 on the Arduino
+ TXO to 3
+ GRN to 4
+ VCC to 5V
+ GND to GND
+ 
+ XBee Xplorer
+ GND GND
+ 3V 3V
+ DOUT D0
+ DIN D1
+ 
+ 10 DOF IMU
+ GND GND
+ 3V 3V
+ SDA A4
+ SCL A5
+ 
+ TMP36
+ 3V 3V
+ A2 
+ A0
+ GND GND
+ 
+ GPS 
+ 5V 5V
+ RX D8
+ TX D9
+ GND GND1
+ 
+ *********************NOTE**************************
+ Pre-FLight Checklist:
+ 1.File in SD card exists named T.csv
+ 2.File in SD card exists named D.csv with a single int value "0" in it.
+*/
+
+
+#include <SoftwareSerial.h>//OpenLog library
+#include <Adafruit_Sensor.h>//Sensor general library
+#include <SFE_BMP180.h>//BMP180 library
+#include <Adafruit_LSM303_U.h>//Accel/Magneto sensor library
+#include <Adafruit_L3GD20.h>//Gyroscope library
+#include <Wire.h>
+
+
+void setup()
+{
+}
+
+void loop()
+{
+
+}
+
+int retrieveTime(){
+
+
+}
+
+int retriveDeployed(){
+
+
+
+}
+
+void setupOpenLog(void) {
+  pinMode(resetOpenLog, OUTPUT);
+  OpenLog.begin(9600);
+
+  //Reset OpenLog
+  digitalWrite(resetOpenLog, LOW);
+  delay(100);
+  digitalWrite(resetOpenLog, HIGH);
+
+  //Wait for OpenLog to respond with '<' to indicate it is alive and recording to a file
+  while (1) {
+    if (OpenLog.available())
+      if (OpenLog.read() == '<') break;
+  }
+}
+
+void createOpenLogFile(char filename) { //creates file using openlog
+  OpenLog.print("new ");
+  OpenLog.println(filename);
+
+
+  while (1) {
+    if (OpenLog.available())
+      if (OpenLog.read() == '<') break;
+  }
+  
+  //End of OpenLog Code.
+  //-------------------------------------------------------------------------------------------
+
+}
+
+void appendOpenLogFile(char filename) { //sets openlog file to append
+  OpenLog.print("append ");
+  OpenLog.print(filename);
+  OpenLog.write(13);
+
+  while (1) {
+    if (OpenLog.available())
+      if (OpenLog.read() == '<') break;
+  }
+
+}
+
+void gotoCommandMode(void) {//allows OpenLog to create folder, go to append mode
+  //Send three control z to enter OpenLog command mode
+  OpenLog.write(26);
+  OpenLog.write(26);
+  OpenLog.write(26);
+
+  //Wait for OpenLog to respond with '>' to indicate we are in command mode
+  while (1) {
+    if (OpenLog.available())
+      if (OpenLog.read() == '>') break;
+  }
+}
+
