@@ -1,3 +1,12 @@
+
+#include <SoftwareSerial.h>//OpenLog library
+#include <Adafruit_Sensor.h>//Sensor general library
+#include <SFE_BMP180.h>//BMP180 library
+#include <Adafruit_LSM303_U.h>//Accel/Magneto sensor library
+#include <Adafruit_L3GD20.h>//Gyroscope library
+#include <Wire.h>
+#include <Servo.h> 
+
 class Data
 {
   public:
@@ -6,13 +15,16 @@ class Data
 
     //Data storage related
     void updateOpenLog();
-    void updateOpenLogTime();
     void updateOpenLogDeployed();
     void updateOpenLogTelemetry();
-    void retrieveOpenLogTime();
     void retrieveOpenLogDeployed();
     void retrieveOpenLogTelemetry();
     void sendTelemetry();//sends telemetry data
+    //OpenLog stuff
+    void setupOpenLog(void);
+    void creatOpenLogFile(char *fileName);
+    void appendOpenLogFile(char *filename);
+    void gotoCommandMode(void);
 
     //Data retrieval
     int getDeployed();
@@ -26,10 +38,12 @@ class Data
     int getAccelZ(); //returns stored Acceleration Z
     int getAccelY(); //returns stored acceleration Y
     int getAccelX(); //returns stored acceleration X
+    int getGPS();
+    int getLastTime();
 
-    //Data update
+    //Data update (i.e. read sensors)
+    void updateAll();
     void updateDeployed();
-    void updateTEAMID();
     void updateMissionTime();
     void updateAltitudeB();
     void updateOutTemp();
@@ -39,17 +53,28 @@ class Data
     void updateAccelZ();
     void updateAccelY();
     void updateAccelX();
+    void updateGPS();
+    void updateTime();
 
     //FlightStateDetermination
     int determineFS();
 
-    //Other functions
+    //Action functions
+    void deploy();//deploys science vehicle
+    void soundBuzzer();
 
-
+    //Sensor Calibration
+    void calibrateAllSensors(); //will do all commands below
+    void calibrateGPS();
+    void calibrateAccel();
+    void calibrateInTemp();
+    void calibrateOutTemp();
+    
   private:
     int TEAMID;
     int missiontime;
     int altitudeB;
+    int TexasOffset
     int outTemp;
     int inTemp;
     int volt;
@@ -57,5 +82,6 @@ class Data
     int accelZ;
     int accelY;
     int accelX;
-    int deployed
+    int Rdeployed; //cansat deployed from Rocket or not
+    int SDeployed;
 };
