@@ -62,6 +62,7 @@ class Data
     //Action functions
     void deploy();//deploys science vehicle
     void soundBuzzer();
+    void SetupCheck();//retrieves things from files
 
     //Sensor Calibration
     void calibrateAllSensors(); //will do all commands below
@@ -74,7 +75,7 @@ class Data
     int TEAMID;
     int missiontime;
     int altitudeB;
-    int TexasOffset
+    int TexasOffset;
     int outTemp;
     int inTemp;
     int volt;

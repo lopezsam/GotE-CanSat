@@ -98,7 +98,12 @@ void updateMissionTime();
 void updateAltitudeB();
 void updateOutTemp();
 void updateInTemp();
-void updateVolt();
+void updateVolt()
+{
+  int sensorValue = analogRead(A0);
+  // Convert the analog reading (which goes from 0 - 1023) to a voltage (0 - 5V):
+  float voltage = sensorValue * (5.0 / 1023.0);
+}
 void updateFSWState();
 void updateAccelZ();
 void updateAccelY();
@@ -143,7 +148,11 @@ void Data::determineFS()//returns a number 0 - 7 (0 being undetermined)
 }
 
 //Action functions
-void deploy();//deploys science vehicle
+void Data::deploy()//deploys science vehicle
+{
+
+}
+
 void soundBuzzer();
 
 //Sensor Calibration

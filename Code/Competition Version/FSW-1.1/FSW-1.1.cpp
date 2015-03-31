@@ -1,10 +1,11 @@
 #include "Data.h"
 
 int currentFS;// current flight state
+Data GOTE(); //object that continas the most up-to-date data
 
 void setup()
 {
-  Data GOTE(); //initial sensor
+  //initial sensor
   GOTE.calibrateAllSensors();
   GOTE.updateAll();
   GOTE.determineFS();
