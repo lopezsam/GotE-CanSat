@@ -70,6 +70,7 @@ class Data
     void calibrateAccel();
     void calibrateInTemp();
     void calibrateOutTemp();
+    void sensorTesting();
     
   private:
     int TEAMID;

@@ -95,19 +95,116 @@ int getLastTime();
 void updateAll();
 void updateDeployed();
 void updateMissionTime();
-void updateAltitudeB();
+
+void updateAltitudeB(int baselineP){ //altitude determined by barometric sensor
+	char status;
+	double T, P, a;
+
+	// You must first get a temperature measurement to perform a pressure reading.
+
+	// Start a temperature measurement:
+	// If request is successful, the number of ms to wait is returned.
+	// If request is unsuccessful, 0 is returned.
+
+	status = pressure.startTemperature();
+	if (status != 0)
+	{
+	  // Wait for the measurement to complete:
+
+	  delay(status);
+
+	  // Retrieve the completed temperature measurement:
+	  // Note that the measurement is stored in the variable T.
+	  // Use '&T' to provide the address of T to the function.
+	  // Function returns 1 if successful, 0 if failure.
+
+	  status = pressure.getTemperature(T);
+	  if (status != 0)
+	  {
+	    // Start a pressure measurement:
+	    // The parameter is the oversampling setting, from 0 to 3 (highest res, longest wait).
+	    // If request is successful, the number of ms to wait is returned.
+	    // If request is unsuccessful, 0 is returned.
+
+	    status = pressure.startPressure(3);
+	    if (status != 0)
+	    {
+	      // Wait for the measurement to complete:
+	      delay(status);
+
+	      // Retrieve the completed pressure measurement:
+	      // Note that the measurement is stored in the variable P.
+	      // Use '&P' to provide the address of P.
+	      // Note also that the function requires the previous temperature measurement (T).
+	      // (If temperature is stable, you can do one temperature measurement for a number of pressure measurements.)
+	      // Function returns 1 if successful, 0 if failure.
+
+	      status = pressure.getPressure(P, T);
+	      if (status != 0)
+	      {
+	        a = pressure.altitude(P, baselineP);
+	        return (a);
+	      }
+	    }
+	  }
+	}
+}
+
 void updateOutTemp();
-void updateInTemp();
+
+void updateInTemp(){ //inside temperature
+	char status;
+	double T;
+
+	status = pressure.startTemperature();
+	if (status != 0)
+	{
+	  // Wait for the measurement to complete:
+	   
+	  delay(status);
+
+	  // Retrieve the completed temperature measurement:
+	  // Note that the measurement is stored in the variable T.
+	  // Use '&T' to provide the address of T to the function.
+	  // Function returns 1 if successful, 0 if failure.
+
+	  status = pressure.getTemperature(T);
+	  if (status != 0)
+	  {
+	  	return (T);
+	  }
+	  else Serial.println("error retrieving temperature measurement\n");
+	}
+	else Serial.println("error starting temperature measurement\n");
+}
+
 void updateVolt()
 {
   int sensorValue = analogRead(A0);
   // Convert the analog reading (which goes from 0 - 1023) to a voltage (0 - 5V):
   float voltage = sensorValue * (5.0 / 1023.0);
 }
+
 void updateFSWState();
-void updateAccelZ();
-void updateAccelY();
-void updateAccelX();
+
+void updateAccelZ(){//Acceleration Z
+	sensors_event_t event; 
+  	accel.getEvent(&event);
+	return (event.acceleration.z);
+} 
+
+void updateAccelY(){ //acceleration Y
+	sensors_event_t event; 
+  	accel.getEvent(&event);
+	return (event.acceleration.y);
+}
+
+void updateAccelX(){ //acceleration X
+	sensors_event_t event; 
+  	accel.getEvent(&event);
+	return (event.acceleration.x);
+}
+
 void updateGPS();
 void updateTime();
 
@@ -156,8 +253,52 @@ void Data::deploy()//deploys science vehicle
 void soundBuzzer();
 
 //Sensor Calibration
-void calibrateAllSensors(); //will do all commands below
+void calibrateAllSensors(){//will do all commands below
+	int baselineP
+	baselineP = getPressure();
+	return (baselineP);
+} 
 void calibrateGPS();
 void calibrateAccel();
 void calibrateInTemp();
 void calibrateOutTemp();
+
+void sensorTesting(){ //status of the sensors
+	int i=0;
+  //BMP180 Sensor (Altitude)
+	if (pressure.begin())
+	{
+    	Serial.println("BMP180(Altitude) init success");
+    	i++;
+    }
+	else
+	{
+  		Serial.println("BMP180(Altitude) init fail \n\n");
+  	}
+
+  //L3DS20 (Gyroscope)
+  	if (gyro.begin(gyro.L3DS20_RANGE_250DPS)) //Specifies 250 Degrees per Second.
+  	{
+    	Serial.println("L3DS20(Gyroscope) init success");
+    	i++;
+  	}
+  	else
+  	{
+    	Serial.println("L3GD20(Gyroscope) init fail \n\n");
+
+  	}
+  //LSM303 (Accelerometer)
+  	if(accel.begin())
+  	{
+    	Serial.println("LSM303(Accel) init success");
+    	i++;
+  	}
+  	else
+  	{
+    	Serial.println("LSM303(Accel) init fail \n\n");
+  	}
+
+  	Serial.println(i);
+  	Serial.println("/3 sensors are functional.\n");
+  	return(0);
+}

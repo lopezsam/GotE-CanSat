@@ -17,7 +17,7 @@ void loop()
   switch (currentFS){//goes to correct loop based on right 
     case 1://PreFlight
     {
-
+        
     }
     case 2://LaunchWait
     {
